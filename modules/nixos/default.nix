@@ -1,6 +1,7 @@
 {...}: {
   imports = [
     ./audio.nix
+    ./auto-upgrade.nix
     ./biometrics.nix
     ./boot.nix
     ./desktop.nix
