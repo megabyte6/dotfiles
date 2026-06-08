@@ -44,4 +44,12 @@
       done
     '';
   in ["${waitForNetwork}"];
+
+  services.flatpak = {
+    uninstallUnmanaged = true;
+    update.auto = {
+      enable = true;
+      onCalendar = "daily";
+    };
+  };
 }

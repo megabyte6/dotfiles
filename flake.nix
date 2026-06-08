@@ -6,11 +6,13 @@
 
     # Exposed as `pkgs.unstable` via an overlay
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
+    nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
   };
 
   outputs = {
-    self,
     nixpkgs,
+    nix-flatpak,
     ...
   } @ inputs: let
     supportedSystems = [
@@ -34,6 +36,8 @@
       specialArgs = {inherit inputs;};
 
       modules = [
+        nix-flatpak.nixosModules.nix-flatpak
+
         ./hosts/vivobook-pro-15
       ];
     };
