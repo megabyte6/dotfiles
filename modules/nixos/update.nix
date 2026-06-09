@@ -5,15 +5,10 @@
 }: {
   system.autoUpgrade = {
     enable = true;
-    flake = "/home/brayden/dotfiles#${config.networking.hostName}";
-    flags = [
-      "--print-build-logs"
-      # Comment the following to stop refreshing inputs each run
-      # (and updating flake.lock). Updating will have to be done manually with
-      # `nix flake update`.
-      "--recreate-lock-file"
-    ];
+    flake = "github:megabyte6/dotfiles#${config.networking.hostName}";
+    flags = ["--print-build-logs"];
     dates = "21:15";
+    runGarbageCollection = true;
   };
 
   # Wait for network connectivity before attempting an upgrade

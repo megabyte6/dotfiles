@@ -33,20 +33,22 @@ NixOS configuration, managed as a flake.
 
 ## First-time setup
 
-1. Put this repo at `~/dotfiles` (the auto-upgrade path in `modules/nixos/nix.nix` expects it there — adjust if you use a different location).
-
-2. Copy in your machine's hardware configuration:
+1. Clone this repo:
 
    ```sh
-   cp /etc/nixos/hardware-configuration.nix \
-      ~/dotfiles/hosts/vivobook-pro-15/hardware-configuration.nix
+   git clone https://github.com/megabyte6/dotfiles.git
    ```
 
-3. Initialise the repo and create the lock file:
+2. Copy in your machine's hardware configuration, replacing `{hostname}` with the hostname of the machine you'd like to select:
 
    ```sh
-   cd ~/dotfiles
-   git init && git add -A
+   cp /etc/nixos/hardware-configuration.nix ~/dotfiles/hosts/{hostname}/hardware-configuration.nix
+   ```
+
+3. Stage the files and update the lock file:
+
+   ```sh
+   git add -A
    nix flake update    # generates flake.lock
    ```
 
@@ -54,19 +56,23 @@ NixOS configuration, managed as a flake.
 
 ## Applying changes
 
+Replace `{hostname}` with the hostname of your system.
+
 ```sh
-sudo nixos-rebuild switch --flake ~/dotfiles#vivobook-pro-15
+sudo nixos-rebuild switch --flake ~/dotfiles#{hostname}
 ```
 
 ## Updating packages
 
+Version bumps are handled by a GitHub Actions workflow daily. `system.autoUpgrade` rebuilds from the remote flake on a schedule. This means that there is little for you to do. If you wish to update manually, use the following commands, replacing `{hostname}` with the hostname of your system:
+
 ```sh
 nix flake update                 # refresh all inputs
 nix flake update nixpkgs         # or just one input
-sudo nixos-rebuild switch --flake ~/dotfiles#vivobook-pro-15
+sudo nixos-rebuild switch --flake ~/dotfiles#{hostname}
 ```
 
-`system.autoUpgrade` rebuilds from this flake on a schedule and bumps inputs on its own. If you decide you don't want this feature, comment out `--recreate-lock-file` in `modules/nixos/nix.nix`. Doing so will require you to manually run `nix flake update` to pull newer package versions.
+Note that the hostname/system specifier can be left out if it is the same as the current generation's hostname.
 
 ## Formatting
 

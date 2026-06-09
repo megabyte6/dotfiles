@@ -1,0 +1,72 @@
+name: update-flake-lock
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # everyday at midnight UTC
+  workflow_dispatch: {} # allow manual runs from the Actions tab
+
+permissions:
+  contents: write # needed to push the updated flake.lock
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@main
+
+      - name: Update flake.lock
+        run: |
+          cp flake.lock /tmp/flake.lock.old
+          nix flake update
+
+      - name: Summarize input changes
+        run: |
+          summary=$(jq -rn \
+            --slurpfile old /tmp/flake.lock.old \
+            --slurpfile new flake.lock '
+              ($old[0].nodes) as $o
+              | $new[0].nodes
+              | to_entries
+              | map(
+                  .key as $name
+                  | (.value.locked.rev // null) as $newrev
+                  | ($o[$name].locked.rev // null) as $oldrev
+                  | select($oldrev != null and $newrev != null and $oldrev != $newrev)
+                  | "- \($name): \($oldrev[0:7]) → \($newrev[0:7])"
+                )
+              | .[]
+            ')
+          [ -z "$summary" ] && summary="No input revisions changed."
+          printf '%s\n' "$summary" > /tmp/summary.txt
+          # Also surface it on the Actions run page
+          {
+            echo "### flake.lock updates"
+            echo
+            printf '%s\n' "$summary"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      # If any host fails to build, the job fails here and the commit/push step
+      # below never runs. This is to prevent a broken bump from being pushed to
+      # the branch that NixOS machines track.
+      - name: Build every host configuration
+        run: |
+          for host in $(nix eval --json '.#nixosConfigurations' --apply builtins.attrNames | jq -r '.[]'); do
+            echo "::group::Building $host"
+            nix build ".#nixosConfigurations.$host.config.system.build.toplevel" --print-build-logs
+            echo "::endgroup::"
+          done
+
+      - name: Commit and push the new lock
+        run: |
+          if git diff --quiet -- flake.lock; then
+            echo "flake.lock unchanged; nothing to do."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git commit -m "flake.lock: update inputs" -m "$(cat /tmp/summary.txt)" -- flake.lock
+          git push
