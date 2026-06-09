@@ -1,7 +1,6 @@
 {...}: {
   imports = [
     ./audio.nix
-    ./auto-upgrade.nix
     ./biometrics.nix
     ./boot.nix
     ./desktop.nix
@@ -13,6 +12,7 @@
     ./packages.nix
     ./programs.nix
     ./services.nix
+    ./update.nix
     ./users.nix
     ./virtualisation.nix
   ];
