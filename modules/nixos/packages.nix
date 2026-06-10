@@ -74,7 +74,6 @@
   services.flatpak.packages = [
     "com.belmoussaoui.Decoder"
     "com.belmoussaoui.Obfuscate"
-    "com.boxy_svg.BoxySVG"
     "com.discordapp.Discord"
     "com.github.tchx84.Flatseal"
     "com.obsproject.Studio"
@@ -127,5 +126,7 @@
     "org.stellarium.Stellarium"
     "org.upscayl.Upscayl"
     "org.videolan.VLC"
+    "re.rizin.cutter"
+    "re.rizin.cutter.plugin.rz-ghidra"
   ];
 }
