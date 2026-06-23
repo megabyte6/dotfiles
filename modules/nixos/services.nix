@@ -20,6 +20,10 @@
 
     flatpak.enable = true;
 
-    llama-cpp.enable = true;
+    llama-cpp = {
+      enable = true;
+      port = 11435;
+      modelsDir = "/srv/llama-cpp/models/";
+    };
   };
 }
