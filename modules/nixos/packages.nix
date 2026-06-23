@@ -56,6 +56,8 @@
     codesnap
     act
 
+    python314
+
     # man pages
     man-pages
     man-pages-posix
