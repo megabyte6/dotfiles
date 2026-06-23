@@ -56,16 +56,9 @@
     codesnap
     act
 
-    # languages / formatters
-    alejandra
-    python314
-
-    # manpages
+    # man pages
     man-pages
     man-pages-posix
-
-    # for the default libvirt network
-    dnsmasq
   ];
 
   services.flatpak.packages = [

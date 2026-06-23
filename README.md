@@ -77,7 +77,7 @@ Note that the hostname/system specifier can be left out if it is the same as the
 ## Formatting
 
 ```sh
-nix fmt
+nix fmt .
 ```
 
 It is configured to use the [alejandra formatter](https://github.com/kamadorueda/alejandra) in `flake.nix`.
