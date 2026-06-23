@@ -20,9 +20,6 @@
 
     flatpak.enable = true;
 
-    llama-cpp = {
-      enable = true;
-      modelsDir = /srv/llama-cpp/models;
-    };
+    llama-cpp.enable = true;
   };
 }

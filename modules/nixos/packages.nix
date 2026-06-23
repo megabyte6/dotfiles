@@ -38,9 +38,6 @@
     baobab
     gnome-disk-utility
 
-    # terminal apps
-    unstable.llama-cpp
-
     # terminal tools
     fzf
     ripgrep
