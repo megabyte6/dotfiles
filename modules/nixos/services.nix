@@ -19,5 +19,10 @@
     gvfs.enable = true;
 
     flatpak.enable = true;
+
+    llama-cpp = {
+      enable = true;
+      modelsDir = /srv/llama-cpp/models;
+    };
   };
 }
