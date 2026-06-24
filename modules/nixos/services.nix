@@ -22,7 +22,7 @@
 
     llama-cpp = {
       enable = true;
-      port = 11435;
+      port = 8033;
       modelsDir = "/srv/llama-cpp/models/";
     };
   };
