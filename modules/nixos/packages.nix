@@ -47,14 +47,16 @@
     bat-extras.batman
     delta
     httpie
-    btop
     fastfetch
-    zellij
-    distrobox
     ffmpeg
     trash-cli
     codesnap
     act
+
+    zellij
+    btop
+    distrobox
+    claude-code
 
     python314
 
