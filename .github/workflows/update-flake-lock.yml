@@ -11,6 +11,8 @@ permissions:
 jobs:
   update:
     runs-on: ubuntu-latest
+    outputs:
+      hosts: ${{ steps.get-hosts.outputs.hosts }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -45,7 +47,7 @@ jobs:
               | .[]
             ')
           [ -z "$summary" ] && summary="No input revisions changed."
-          printf '%s\n' "$summary" > /tmp/summary.txt
+          printf '%s\n' "$summary" > summary.txt
           # Also surface it on the Actions run page
           {
             echo "### flake.lock updates"
@@ -53,17 +55,59 @@ jobs:
             printf '%s\n' "$summary"
           } >> "$GITHUB_STEP_SUMMARY"
 
+      - name: Get host list
+        id: get-hosts
+        run: |
+          hosts=$(nix eval --json '.#nixosConfigurations' --apply builtins.attrNames)
+          echo "hosts=$hosts" >> "$GITHUB_OUTPUT"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: flake-lock
+          path: |
+            flake.lock
+            summary.txt
+
+  build:
+    needs: update
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        host: ${{ fromJson(needs.update.outputs.hosts) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Download updated flake.lock
+        uses: actions/download-artifact@v8
+        with:
+          name: flake-lock
+
+      - name: Install Nix
+        uses: DeterminateSystems/nix-installer-action@v22
+        with:
+          extra-conf: |
+            extra-substituters = https://cache.nixos-cuda.org
+            extra-trusted-public-keys = cache.nixos-cuda.org:74DUi4Ye579gUqzH4ziL9IyiJBlDpMRn9MBN8oNan9M=
+
       # If any host fails to build, the job fails here and the commit/push step
       # below never runs. This is to prevent a broken bump from being pushed to
       # the branch that NixOS machines track.
-      - name: Build every host configuration
-        run: |
-          for host in $(nix eval --json '.#nixosConfigurations' --apply builtins.attrNames | jq -r '.[]'); do
-            echo "::group::Building $host"
-            nix build ".#nixosConfigurations.$host.config.system.build.toplevel" --no-link
-            echo "::endgroup::"
-            nix-collect-garbage
-          done
+      - name: Build ${{ matrix.host }}
+        run: nix build ".#nixosConfigurations.${{ matrix.host }}.config.system.build.toplevel" --no-link
+
+  commit:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Download updated flake.lock
+        uses: actions/download-artifact@v8
+        with:
+          name: flake-lock
 
       - name: Commit and push the new lock
         run: |
@@ -73,5 +117,5 @@ jobs:
           fi
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git commit -m "flake.lock: update inputs" -m "$(cat /tmp/summary.txt)" -- flake.lock
+          git commit -m "flake.lock: update inputs" -m "$(cat summary.txt)" -- flake.lock
           git push
