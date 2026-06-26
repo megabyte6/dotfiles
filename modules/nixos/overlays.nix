@@ -21,9 +21,5 @@
     (final: prev: {
       llama-cpp = prev.llama-cpp.override {cudaSupport = true;};
     })
-
-    (final: prev: {
-      tuigreet = inputs.tuigreet.packages.${prev.stdenv.hostPlatform.system}.default;
-    })
   ];
 }
