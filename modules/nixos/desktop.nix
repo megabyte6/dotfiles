@@ -3,11 +3,13 @@
     enable = true;
     settings.default_session.command = ''
       ${pkgs.tuigreet}/bin/tuigreet \
+      --sessions ${pkgs.niri}/share/wayland-sessions \
       --time \
       --remember \
       --remember-user-session \
-      --asterisks \
-      --sessions ${pkgs.niri}/share/wayland-sessions
+      --user-menu \
+      --theme 'border=magenta;text=cyan;prompt=green;time=red;action=blue;button=yellow;container=black;input=red' \
+      --asterisks
     '';
   };
 

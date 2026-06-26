@@ -8,6 +8,8 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
 
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+
+    tuigreet.url = "github:NotAShelf/tuigreet";
   };
 
   outputs = {
