@@ -29,7 +29,7 @@
     unstable.vscode
     unstable.jetbrains.idea
 
-    proton-authenticator
+    unstable.proton-authenticator
     wireshark
     openfortivpn
     unstable.binaryninja-free
