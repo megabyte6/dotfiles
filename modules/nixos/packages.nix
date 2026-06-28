@@ -66,6 +66,7 @@
   ];
 
   services.flatpak.packages = [
+    "ch.protonmail.protonmail-bridge"
     "com.belmoussaoui.Decoder"
     "com.belmoussaoui.Obfuscate"
     "com.discordapp.Discord"
