@@ -5,9 +5,8 @@
       experimental-features = ["nix-command" "flakes"];
     };
 
+    # Automatic runs are performed by the upgrade service in update.nix
     gc = {
-      automatic = true;
-      dates = "daily";
       options = "--delete-older-than 30d";
     };
   };
