@@ -25,6 +25,10 @@
 
   systemd = {
     services.nixos-upgrade.serviceConfig = {
+      # Allow time for logind to finish unwinding the suspend state so systemd-inhibit doesn't
+      # immediately fail
+      ExecStartPre = ["${pkgs.coreutils}/bin/sleep 30"];
+
       ExecStart = let
         fullUpdate = pkgs.writeShellScript "full-update" ''
           # Wait for internet connectivity
@@ -59,7 +63,7 @@
 
       ExecStopPost = let
         suspendIfLidClosed = pkgs.writeShellScript "suspend-if-lid-closed" ''
-          lid=$(cat /proc/acpi/button/lid/*/state 2>/dev/null | awk '{print $2}')
+          lid=$(cat /proc/acpi/button/lid/*/state 2>/dev/null | ${pkgs.gawk}/bin/awk '{print $2}')
           if [ "$lid" = "closed" ]; then
             systemctl suspend
           fi
