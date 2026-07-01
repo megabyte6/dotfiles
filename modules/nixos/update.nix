@@ -25,21 +25,12 @@
 
   systemd = {
     services.nixos-upgrade.serviceConfig = {
-      # Allow time for logind to finish unwinding the suspend state so systemd-inhibit doesn't
-      # immediately fail
-      ExecStartPre = ["${pkgs.coreutils}/bin/sleep 30"];
-
       ExecStart = let
         fullUpdate = pkgs.writeShellScript "full-update" ''
           # Wait for internet connectivity
-          i=0
-          until ${pkgs.curl}/bin/curl --silent --fail --max-time 5 https://github.com > /dev/null; do
-            sleep 2
-            i=$((i + 1))
-            if [ $i -ge 10 ]; then
-              exit 1
-            fi
-          done
+          ${pkgs.curl}/bin/curl --silent --fail --connect-timeout 5 \
+            --retry 20 --retry-delay 3 --retry-all-errors --retry-max-time 60 \
+            https://github.com > /dev/null || exit 1
 
           # Run the Flatpak update in parallel. `restart` (not `start`) forces the oneshot to
           # re-run each day even if it is still marked active from a previous run, and it blocks
@@ -59,7 +50,7 @@
           exit "$status"
         '';
       in
-        lib.mkForce "${config.systemd.package}/bin/systemd-inhibit --what=sleep:idle --who=nixos-upgrade --why='System updates in progress' --mode=block ${fullUpdate}";
+        lib.mkForce "${config.systemd.package}/bin/systemd-inhibit --what=idle:sleep:handle-lid-switch --who=nixos-upgrade --why='System updates in progress' --mode=block ${fullUpdate}";
 
       ExecStopPost = let
         suspendIfLidClosed = pkgs.writeShellScript "suspend-if-lid-closed" ''
