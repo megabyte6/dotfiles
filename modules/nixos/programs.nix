@@ -25,6 +25,8 @@
     };
     gamemode.enable = true;
 
+    nix-index-database.comma.enable = true;
+
     # Allow for running unpatched dynamic binaries (the libraries they expect at
     # runtime). Editors often try to download and run Language server binaries.
     # Just add any missing libraries here.

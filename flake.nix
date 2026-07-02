@@ -3,18 +3,15 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-
-    # Exposed as `pkgs.unstable` via an overlay
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable"; # exposed as `pkgs.unstable` via an overlay
     nix-flatpak.url = "github:gmodena/nix-flatpak/?ref=latest";
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = {
-    nixpkgs,
-    nix-flatpak,
-    ...
-  } @ inputs: let
+  outputs = {nixpkgs, ...} @ inputs: let
     supportedSystems = [
       "x86_64-linux"
       "aarch64-linux"
@@ -35,11 +32,7 @@
       # Make all flake inputs available to every module as `inputs`
       specialArgs = {inherit inputs;};
 
-      modules = [
-        nix-flatpak.nixosModules.nix-flatpak
-
-        ./hosts/vivobook-pro-15
-      ];
+      modules = [./hosts/vivobook-pro-15];
     };
 
     # `nix fmt` formats the whole repo with alejandra

@@ -1,5 +1,8 @@
-{...}: {
+{inputs, ...}: {
   imports = [
+    inputs.nix-flatpak.nixosModules.nix-flatpak
+    inputs.nix-index-database.nixosModules.default
+
     ./audio.nix
     ./biometrics.nix
     ./boot.nix
