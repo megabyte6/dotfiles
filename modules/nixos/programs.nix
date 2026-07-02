@@ -27,6 +27,10 @@
 
     nix-index-database.comma.enable = true;
 
+    gnome-disks.enable = true;
+
+    localsend.enable = true;
+
     # Allow for running unpatched dynamic binaries (the libraries they expect at
     # runtime). Editors often try to download and run Language server binaries.
     # Just add any missing libraries here.

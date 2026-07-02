@@ -36,7 +36,6 @@
 
     nautilus
     baobab
-    gnome-disk-utility
 
     # terminal tools
     fzf
@@ -113,7 +112,6 @@
     "org.inkscape.Inkscape"
     "org.kde.kdenlive"
     "org.libreoffice.LibreOffice"
-    "org.localsend.localsend_app"
     "org.mozilla.thunderbird"
     "org.onlyoffice.desktopeditors"
     "org.prismlauncher.PrismLauncher"
