@@ -25,6 +25,10 @@
 
   systemd = {
     services.nixos-upgrade.serviceConfig = {
+      # Allow time for logind to finish unwinding the suspend state so systemd-inhibit doesn't
+      # immediately fail
+      ExecStartPre = ["${pkgs.coreutils}/bin/sleep 30"];
+
       ExecStart = let
         fullUpdate = pkgs.writeShellScript "full-update" ''
           # Wait for internet connectivity
