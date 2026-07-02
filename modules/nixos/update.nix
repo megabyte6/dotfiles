@@ -33,8 +33,7 @@
             https://github.com > /dev/null || exit 1
 
           # Run the Flatpak update in parallel. `restart` (not `start`) forces the oneshot to
-          # re-run each day even if it is still marked active from a previous run, and it blocks
-          # until that run finishes.
+          # re-run each day even if it is still marked active from a previous run.
           ${config.systemd.package}/bin/systemctl restart flatpak-managed-install-timer.service &
           flatpak_pid=$!
 
