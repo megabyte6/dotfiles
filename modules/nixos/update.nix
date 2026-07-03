@@ -25,9 +25,25 @@
 
   systemd = {
     services.nixos-upgrade.serviceConfig = {
-      # Allow time for logind to finish unwinding the suspend state so systemd-inhibit doesn't
-      # immediately fail
-      ExecStartPre = ["${pkgs.coreutils}/bin/sleep 30"];
+      ExecStartPre = let
+        # A WakeSystem RTC wake while the lid is still closed races logind's lid-switch handler,
+        # which immediately starts a new suspend. logind then refuses any new inhibitor with
+        # "already running" for as long as that sleep is actually in progress (i.e. until the
+        # machine truly wakes again), so retry a cheap throwaway inhibitor acquisition instead of
+        # gambling on a fixed delay.
+        waitForInhibit = pkgs.writeShellScript "wait-for-sleep-inhibit" ''
+          i=0
+          until ${config.systemd.package}/bin/systemd-inhibit \
+              --what=idle:sleep:handle-lid-switch --who=nixos-upgrade \
+              --why="System updates in progress" --mode=block true 2>/dev/null; do
+            i=$((i + 1))
+            if [ $i -ge 40 ]; then
+              exit 0
+            fi
+            sleep 3
+          done
+        '';
+      in ["${waitForInhibit}"];
 
       ExecStart = let
         fullUpdate = pkgs.writeShellScript "full-update" ''
