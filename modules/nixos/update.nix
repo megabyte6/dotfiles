@@ -70,15 +70,6 @@
         '';
       in
         lib.mkForce "${config.systemd.package}/bin/systemd-inhibit --what=idle:sleep:handle-lid-switch --who=nixos-upgrade --why='System updates in progress' --mode=block ${fullUpdate}";
-
-      ExecStopPost = let
-        suspendIfLidClosed = pkgs.writeShellScript "suspend-if-lid-closed" ''
-          lid=$(cat /proc/acpi/button/lid/*/state 2>/dev/null | ${pkgs.gawk}/bin/awk '{print $2}')
-          if [ "$lid" = "closed" ]; then
-            systemctl suspend
-          fi
-        '';
-      in ["${suspendIfLidClosed}"];
     };
 
     timers = {
