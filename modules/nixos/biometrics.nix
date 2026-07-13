@@ -13,7 +13,7 @@
           suppress_unknown = false;
           timeout_notice = true;
           use_cnn = false;
-          workaround = "off";
+          workaround = "input";
         };
         debug = {
           end_report = false;
