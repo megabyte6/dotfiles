@@ -22,6 +22,7 @@
 
     llama-cpp = {
       enable = true;
+      package = pkgs.unstable.llama-cpp;
       port = 8033;
       modelsDir = "/srv/llama-cpp/models/";
     };
