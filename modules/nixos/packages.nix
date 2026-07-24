@@ -109,6 +109,7 @@
     "org.gnome.design.Emblem"
     "org.gnome.design.IconLibrary"
     "org.gnome.font-viewer"
+    "org.godotengine.Godot"
     "org.inkscape.Inkscape"
     "org.kde.kdenlive"
     "org.libreoffice.LibreOffice"
