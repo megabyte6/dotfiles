@@ -116,7 +116,6 @@
     "org.mozilla.thunderbird"
     "org.onlyoffice.desktopeditors"
     "org.prismlauncher.PrismLauncher"
-    "org.radare.iaito"
     "org.stellarium.Stellarium"
     "org.upscayl.Upscayl"
     "org.videolan.VLC"
