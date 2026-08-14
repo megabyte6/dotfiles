@@ -5,44 +5,12 @@
       control = "sufficient";
       settings = {
         core = {
-          abort_if_lid_closed = true;
-          abort_if_ssh = true;
-          detection_notice = false;
-          disabled = false;
-          no_confirmation = false;
-          suppress_unknown = false;
-          timeout_notice = true;
-          use_cnn = false;
-          workaround = "input";
-        };
-        debug = {
-          end_report = false;
-          gtk_stdout = false;
-          verbose_stamps = false;
-        };
-        rubberstamps = {
-          enabled = false;
-          stamp_rules = "nod\t\t5s\t\tfailsafe     min_distance=12";
-        };
-        snapshots = {
-          save_failed = false;
-          save_successful = false;
+          use_cnn = true;
+          workaround = "off";
         };
         video = {
           certainty = 3.5;
           dark_threshold = 80;
-          device_format = "v4l2";
-          device_fps = -1;
-          device_path = "/dev/video2";
-          exposure = -1;
-          force_mjpeg = false;
-          frame_height = -1;
-          frame_width = -1;
-          max_height = 320;
-          recording_plugin = "opencv";
-          rotate = 0;
-          timeout = 4;
-          warn_no_device = true;
         };
       };
     };
