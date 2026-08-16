@@ -6,7 +6,7 @@
       settings = {
         core = {
           use_cnn = true;
-          workaround = "off";
+          workaround = "input";
         };
         video = {
           certainty = 3.5;
