@@ -4,7 +4,6 @@
   environment.systemPackages = with pkgs; [
     # niri / wayland shell
     xwayland-satellite
-    unstable.noctalia-shell
     unstable.vicinae
     wl-clipboard
     brightnessctl

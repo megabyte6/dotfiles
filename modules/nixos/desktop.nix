@@ -1,18 +1,33 @@
-{pkgs, ...}: {
-  services.greetd = {
-    enable = true;
-    settings.default_session.command = ''
-      ${pkgs.tuigreet}/bin/tuigreet \
-      --sessions ${pkgs.niri}/share/wayland-sessions \
-      --time \
-      --remember \
-      --remember-user-session \
-      --user-menu \
-      --asterisks
-    '';
-  };
+{pkgs, inputs, ...}: let
+  noctaliaPath = "nixos/modules/programs/wayland/noctalia.nix";
+  noctaliaGreeterPath = "nixos/modules/services/display-managers/noctalia-greeter.nix";
+in {
+  imports = [
+    (
+      if builtins.pathExists "${inputs.nixpkgs}/${noctaliaPath}"
+      then throw "noctalia: module has landed in stable nixpkgs. Drop this import and the `package` override in modules/nixos/desktop.nix."
+      else "${inputs.nixpkgs-unstable}/${noctaliaPath}"
+    )
+    (
+      if builtins.pathExists "${inputs.nixpkgs}/${noctaliaGreeterPath}"
+      then throw "noctalia-greeter: module has landed in stable nixpkgs. Drop this import and the `package` override in modules/nixos/desktop.nix."
+      else "${inputs.nixpkgs-unstable}/${noctaliaGreeterPath}"
+    )
+  ];
 
   programs.niri.enable = true;
+
+  programs.noctalia = {
+    enable = true;
+    recommendedServices.enable = true;
+    systemd.enable = true;
+    package = pkgs.unstable.noctalia;
+  };
+
+  services.displayManager.noctalia-greeter = {
+    enable = true;
+    package = pkgs.unstable.noctalia-greeter;
+  };
 
   fonts = {
     packages = with pkgs; [
