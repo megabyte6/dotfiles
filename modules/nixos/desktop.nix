@@ -45,8 +45,6 @@ in {
     };
   };
 
-  security.soteria.enable = true;
-
   programs.seahorse.enable = true;
   programs.kdeconnect.enable = true;
   programs.nautilus-open-any-terminal = {
