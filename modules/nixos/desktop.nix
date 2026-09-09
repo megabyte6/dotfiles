@@ -1,4 +1,8 @@
-{pkgs, inputs, ...}: let
+{
+  pkgs,
+  inputs,
+  ...
+}: let
   noctaliaPath = "nixos/modules/programs/wayland/noctalia.nix";
   noctaliaGreeterPath = "nixos/modules/services/display-managers/noctalia-greeter.nix";
 in {
