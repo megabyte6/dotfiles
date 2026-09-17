@@ -15,7 +15,6 @@
     # zed
     unstable.zed-editor
     nixd
-    nil
 
     # neovim build deps
     unzip
