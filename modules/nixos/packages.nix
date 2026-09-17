@@ -34,7 +34,7 @@
     nautilus
     baobab
 
-    # terminal tools
+    # CLI tools
     fzf
     ripgrep
     fd
@@ -46,12 +46,13 @@
     fastfetch
     ffmpeg
     trash-cli
+    distrobox
     codesnap
     act
 
+    # TUIs
     zellij
     btop
-    distrobox
     claude-code
 
     python314
