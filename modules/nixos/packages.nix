@@ -28,7 +28,6 @@
 
     unstable.proton-authenticator
     wireshark
-    openfortivpn
     unstable.binaryninja-free
 
     nautilus

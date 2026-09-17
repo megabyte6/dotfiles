@@ -5,6 +5,8 @@
       plugins = with pkgs; [
         # For StackSmash VPN network
         networkmanager-openvpn
+        # For SFU VPN network
+        networkmanager-fortisslvpn
       ];
     };
 
