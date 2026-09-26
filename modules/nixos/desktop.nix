@@ -1,12 +1,23 @@
 {
   pkgs,
   inputs,
+  lib,
   ...
 }: let
   noctaliaPath = "nixos/modules/programs/wayland/noctalia.nix";
   noctaliaGreeterPath = "nixos/modules/services/display-managers/noctalia-greeter.nix";
 in {
   imports = [
+    {
+      # Compat stub: the unstable noctalia-greeter module sets this option, but it
+      # doesn't exist in stable's polkit module yet. Remove when noctalia lands in
+      # stable.
+      options.security.polkit.enablePkexecWrapper = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = "Stub for compatibility with the unstable noctalia-greeter module.";
+      };
+    }
     (
       if builtins.pathExists "${inputs.nixpkgs}/${noctaliaPath}"
       then throw "noctalia: module has landed in stable nixpkgs. Drop this import and the `package` override in modules/nixos/desktop.nix."
