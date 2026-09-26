@@ -25,6 +25,12 @@
       package = pkgs.unstable.llama-cpp;
       port = 8033;
       modelsDir = "/srv/llama-cpp/models/";
+      extraFlags = [
+        "-c"
+        "16384"
+        "-ngl"
+        "32"
+      ];
     };
   };
 }
