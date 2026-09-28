@@ -26,10 +26,15 @@
       port = 8033;
       modelsDir = "/srv/llama-cpp/models/";
       extraFlags = [
-        "-c"
-        "16384"
-        "-ngl"
-        "32"
+        "--n-gpu-layers"
+        "99"
+        "--ctx-size"
+        "32768"
+        "--cache-type-k"
+        "q8_0"
+        "--cache-type-v"
+        "q8_0"
+        "--jinja"
       ];
     };
   };
