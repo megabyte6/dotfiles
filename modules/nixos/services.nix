@@ -29,7 +29,7 @@
         "--n-gpu-layers"
         "99"
         "--ctx-size"
-        "32768"
+        "24576"
         "--cache-type-k"
         "q8_0"
         "--cache-type-v"
