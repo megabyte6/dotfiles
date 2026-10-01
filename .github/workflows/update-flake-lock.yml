@@ -25,7 +25,7 @@ jobs:
       - name: Update flake.lock
         run: |
           cp flake.lock /tmp/flake.lock.old
-          nix flake update
+          nix flake update $(nix flake metadata --json | jq -r '.locks.nodes.root.inputs | keys[] | select(. != "binaryninja")')
 
       - name: Summarize input changes
         run: |

@@ -1,4 +1,8 @@
-{pkgs, ...}: {
+{
+  config,
+  pkgs,
+  ...
+}: {
   programs = {
     fish.enable = true;
 
@@ -27,6 +31,11 @@
 
     nix-index-database.comma.enable = true;
 
+    binary-ninja = {
+      enable = true;
+      package = pkgs.binary-ninja-personal-wayland;
+    };
+
     gnome-disks.enable = true;
 
     localsend.enable = true;
@@ -52,4 +61,7 @@
       ];
     };
   };
+
+  # Keep the installer zip alive as long as this generation exists
+  system.extraDependencies = [config.programs.binary-ninja.package.src];
 }
