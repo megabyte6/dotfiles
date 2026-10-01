@@ -18,5 +18,7 @@
     ./update.nix
     ./users.nix
     ./virtualisation.nix
+
+    ./ensc351.nix
   ];
 }
