@@ -42,7 +42,7 @@ in {
     enable = true;
     # No space before the "(" as a stray space causes "permission denied".
     exports = ''
-      /srv/ensc351/public 192.168.7.0/24(all_squash,anonuid=1000,anongid=100)
+      /srv/ensc351/public 192.168.7.0/24(rw,all_squash,anonuid=1000,anongid=100)
     '';
   };
 }
