@@ -32,14 +32,14 @@ in {
 
   # Shared folder, world-writable.
   systemd.tmpfiles.rules = [
-    "d /srv/ensc351/public 0777 brayden users -"
+    "d /srv/ensc351/public 0777 brayden users"
   ];
 
   services.nfs.server = {
     enable = true;
     # No space before the "(" as a stray space causes "permission denied".
     exports = ''
-      /srv/ensc351/public 192.168.7.0/24(rw,sync,no_subtree_check,all_squash,anonuid=1000,anongid=100)
+      /srv/ensc351/public 192.168.7.0/24(all_squash,anonuid=1000,anongid=100)
     '';
   };
 }
