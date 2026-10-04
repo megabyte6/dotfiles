@@ -27,6 +27,10 @@ jobs:
           cp flake.lock /tmp/flake.lock.old
           nix flake update $(nix flake metadata --json | jq -r '.locks.nodes.root.inputs | keys[] | select(. != "binaryninja")')
 
+      - name: Check flake
+        # Evaluation only: full builds depend on host state
+        run: nix flake check --no-build
+
       - name: Summarize input changes
         run: |
           summary=$(jq -rn \
