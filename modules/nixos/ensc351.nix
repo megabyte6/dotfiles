@@ -11,7 +11,10 @@ in {
           type = "ethernet";
         };
         ethernet.mac-address = boardMac;
-        ipv4.never-default = true;
+        ipv4 = {
+          method = "auto";
+          never-default = true;
+        };
       };
     };
 
