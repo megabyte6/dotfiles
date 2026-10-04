@@ -1,39 +1,33 @@
 {...}: let
-  # Fixed name assigned by the .link rule below, so either USB port works.
-  beagleInterface = "beagle0";
+  boardInterface = "beagle0";
   # Find with: `ip a` (link/ether of the board's USB Ethernet device)
-  beagleMac = "1C:BA:8C:A2:ED:6A";
+  boardMac = "1C:BA:8C:A2:ED:6A";
 in {
   networking = {
     networkmanager.ensureProfiles.profiles = {
-      "BeagleY-AI USB" = {
+      "BeagleY-AI" = {
         connection = {
-          id = "BeagleY-AI USB";
+          id = "BeagleY-AI";
           type = "ethernet";
-          autoconnect-priority = 100;
         };
-        ethernet.mac-address = beagleMac;
-        ipv4 = {
-          method = "auto";
-          never-default = true;
-        };
+        ethernet.mac-address = boardMac;
+        ipv4.never-default = true;
       };
     };
 
     nat = {
       enable = true;
-      internalInterfaces = [beagleInterface];
+      internalInterfaces = [boardInterface];
       externalInterface = "wlo1";
     };
 
-    # Allow NFS only on the USB-Ethernet link to the board.
-    firewall.interfaces."${beagleInterface}".allowedTCPPorts = [2049];
+    firewall.interfaces."${boardInterface}".allowedTCPPorts = [2049];
   };
 
-  # Rename the board's USB Ethernet device by MAC regardless of USB port.
+  # Pin a stable name by MAC, since the kernel's name changes with the USB port.
   systemd.network.links."10-beagle" = {
-    matchConfig.PermanentMACAddress = beagleMac;
-    linkConfig.Name = beagleInterface;
+    matchConfig.PermanentMACAddress = boardMac;
+    linkConfig.Name = boardInterface;
   };
 
   # Shared folder, world-writable.
