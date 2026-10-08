@@ -33,7 +33,7 @@
 
     binary-ninja = {
       enable = true;
-      package = pkgs.binary-ninja-personal-wayland;
+      package = pkgs.binary-ninja.bundled-qt.personal-wayland;
     };
 
     gnome-disks.enable = true;
