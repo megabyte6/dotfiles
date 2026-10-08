@@ -33,7 +33,7 @@
 
     binary-ninja = {
       enable = true;
-      package = pkgs.binary-ninja.bundled-qt.personal-wayland;
+      package = pkgs.binary-ninja.bundled-qt-fhs.personal-wayland;
     };
 
     gnome-disks.enable = true;
@@ -63,5 +63,8 @@
   };
 
   # Keep the installer zip alive as long as this generation exists
-  system.extraDependencies = [config.programs.binary-ninja.package.src];
+  # (the FHS variant wraps the real package, exposed as `unwrapped`)
+  system.extraDependencies = let
+    pkg = config.programs.binary-ninja.package;
+  in [(pkg.unwrapped or pkg).src];
 }
