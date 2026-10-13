@@ -70,6 +70,7 @@
     "com.protonvpn.www"
     "com.spotify.Client"
     "com.stremio.Stremio"
+    "com.ulduzsoft.Birdtray"
     "com.usebottles.bottles"
     "com.usebruno.Bruno"
     "de.swsnr.pictureoftheday"
