@@ -111,7 +111,6 @@
     "org.kde.kdenlive"
     "org.libreoffice.LibreOffice"
     "org.mozilla.thunderbird"
-    "org.onlyoffice.desktopeditors"
     "org.prismlauncher.PrismLauncher"
     "org.stellarium.Stellarium"
     "org.upscayl.Upscayl"
