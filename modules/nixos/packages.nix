@@ -53,7 +53,7 @@
     btop
     claude-code
 
-    python314
+    python315
 
     # man pages
     man-pages
