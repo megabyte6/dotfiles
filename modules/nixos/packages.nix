@@ -78,7 +78,6 @@
     "io.anytype.anytype"
     "io.appflowy.AppFlowy"
     "io.github.flattool.Warehouse"
-    "io.github.mgerhardy.vengi.voxedit"
     "io.github.nokse22.asciidraw"
     "io.github.nozwock.Packet"
     "io.github.pwr_solaar.solaar"
