@@ -28,6 +28,7 @@
 
     unstable.proton-authenticator
     wireshark
+    unstable.nirimod
 
     nautilus
     baobab
