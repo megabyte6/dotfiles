@@ -115,7 +115,5 @@
     "org.stellarium.Stellarium"
     "org.upscayl.Upscayl"
     "org.videolan.VLC"
-    "re.rizin.cutter"
-    "re.rizin.cutter.plugin.rz-ghidra"
   ];
 }
