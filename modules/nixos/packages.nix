@@ -86,7 +86,6 @@
     "io.gitlab.liferooter.TextPieces"
     "io.gitlab.theevilskeleton.Upscaler"
     "io.mpv.Mpv"
-    "me.iepure.devtoolbox"
     "net.blockbench.Blockbench"
     "net.veloren.airshipper"
     "org.ghidra_sre.Ghidra"
