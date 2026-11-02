@@ -44,6 +44,8 @@ in {
     package = pkgs.unstable.noctalia-greeter;
   };
 
+  services.desktopManager.cosmic.enable = true;
+
   fonts = {
     packages = with pkgs; [
       noto-fonts
