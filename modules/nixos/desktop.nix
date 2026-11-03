@@ -33,18 +33,20 @@ in {
   programs.niri.enable = true;
 
   programs.noctalia = {
-    enable = true;
+    enable = false;
     recommendedServices.enable = true;
     systemd.enable = true;
     package = pkgs.unstable.noctalia;
   };
 
   services.displayManager.noctalia-greeter = {
-    enable = true;
+    enable = false;
     package = pkgs.unstable.noctalia-greeter;
   };
 
   services.desktopManager.cosmic.enable = true;
+
+  services.displayManager.cosmic-greeter.enable = true;
 
   fonts = {
     packages = with pkgs; [
