@@ -52,6 +52,16 @@
             --retry 20 --retry-delay 3 --retry-all-errors --retry-max-time 60 \
             https://github.com > /dev/null || exit 1
 
+          # Skip the update if the latest completed run of the flake-update workflow failed.
+          # Fail open: if the API is unreachable or rate limited, the update proceeds anyway.
+          conclusion=$(${pkgs.curl}/bin/curl --silent --fail --connect-timeout 5 --max-time 20 \
+            "https://api.github.com/repos/megabyte6/dotfiles/actions/workflows/update-flake-inputs.yaml/runs?per_page=1&status=completed" \
+            | ${pkgs.jq}/bin/jq -r '.workflow_runs[0].conclusion // empty') || conclusion=""
+          if [ "$conclusion" = "failure" ]; then
+            echo "Latest 'Update flake inputs' GitHub Action failed; skipping update." >&2
+            exit 1
+          fi
+
           # Run the Flatpak update in parallel. `restart` (not `start`) forces the oneshot to
           # re-run each day even if it is still marked active from a previous run.
           ${config.systemd.package}/bin/systemctl restart flatpak-managed-install-timer.service &
