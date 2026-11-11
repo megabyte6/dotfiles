@@ -13,4 +13,8 @@
   system.extraDependencies = let
     pkg = config.programs.binary-ninja.package;
   in [(pkg.unwrapped or pkg).src];
+
+  environment.systemPackages = with pkgs; [
+    wireshark
+  ];
 }

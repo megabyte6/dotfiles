@@ -5,5 +5,6 @@
     ./flatpak.nix
     ./fonts.nix
     ./niri.nix
+    ./packages.nix
   ];
 }
