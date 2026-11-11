@@ -1,8 +1,4 @@
-{
-  config,
-  pkgs,
-  ...
-}: {
+{pkgs, ...}: {
   programs = {
     fish.enable = true;
 
@@ -20,25 +16,7 @@
 
     gnupg.agent.enable = true;
 
-    steam = {
-      enable = true;
-      gamescopeSession.enable = true;
-      extraCompatPackages = with pkgs; [
-        proton-ge-bin
-      ];
-    };
-    gamemode.enable = true;
-
     nix-index-database.comma.enable = true;
-
-    binary-ninja = {
-      enable = true;
-      package = pkgs.binary-ninja.bundled-qt-fhs.personal-wayland;
-    };
-
-    gnome-disks.enable = true;
-
-    localsend.enable = true;
 
     # Allow for running unpatched dynamic binaries (the libraries they expect at
     # runtime). Editors often try to download and run Language server binaries.
@@ -61,10 +39,4 @@
       ];
     };
   };
-
-  # Keep the installer zip alive as long as this generation exists
-  # (the FHS variant wraps the real package, exposed as `unwrapped`)
-  system.extraDependencies = let
-    pkg = config.programs.binary-ninja.package;
-  in [(pkg.unwrapped or pkg).src];
 }

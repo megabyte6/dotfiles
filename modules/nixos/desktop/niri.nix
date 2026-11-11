@@ -20,12 +20,12 @@ in {
     }
     (
       if builtins.pathExists "${inputs.nixpkgs}/${noctaliaPath}"
-      then throw "noctalia: module has landed in stable nixpkgs. Drop this import and the `package` override in modules/nixos/desktop.nix."
+      then throw "noctalia: module has landed in stable nixpkgs. Drop this import and the `package` override in modules/nixos/desktop/niri.nix."
       else "${inputs.nixpkgs-unstable}/${noctaliaPath}"
     )
     (
       if builtins.pathExists "${inputs.nixpkgs}/${noctaliaGreeterPath}"
-      then throw "noctalia-greeter: module has landed in stable nixpkgs. Drop this import and the `package` override in modules/nixos/desktop.nix."
+      then throw "noctalia-greeter: module has landed in stable nixpkgs. Drop this import and the `package` override in modules/nixos/desktop/niri.nix."
       else "${inputs.nixpkgs-unstable}/${noctaliaGreeterPath}"
     )
   ];
@@ -42,30 +42,6 @@ in {
   services.displayManager.noctalia-greeter = {
     enable = true;
     package = pkgs.unstable.noctalia-greeter;
-  };
-
-  fonts = {
-    packages = with pkgs; [
-      noto-fonts
-      noto-fonts-color-emoji
-      noto-fonts-cjk-sans
-      noto-fonts-cjk-serif
-      liberation_ttf
-      carlito
-      nerd-fonts.jetbrains-mono
-    ];
-    fontconfig.defaultFonts = {
-      monospace = ["JetBrainsMono Nerd Font" "Noto Sans Mono"];
-      sansSerif = ["Noto Sans"];
-      serif = ["Noto Serif"];
-    };
-  };
-
-  programs.seahorse.enable = true;
-  programs.kdeconnect.enable = true;
-  programs.nautilus-open-any-terminal = {
-    enable = true;
-    terminal = "ghostty";
   };
 
   programs.dconf.profiles.user.databases = [
