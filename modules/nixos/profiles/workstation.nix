@@ -8,7 +8,7 @@
   # Everything uses mkDefault so a host can still turn off any single item
   # with a plain `= false`.
   config = lib.mkIf config.my.profiles.workstation.enable {
-    my.desktop.enable = lib.mkDefault true;
+    my.desktop.environment = lib.mkDefault "niri";
 
     my.features = {
       gaming.enable = lib.mkDefault true;

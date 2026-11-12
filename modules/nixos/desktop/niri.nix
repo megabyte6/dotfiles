@@ -32,14 +32,19 @@ in {
   ];
 
   # The imports above stay unconditional (they only declare options);
-  # everything below is gated on the desktop toggle.
-  config = lib.mkIf config.my.desktop.enable {
+  # everything below only applies when niri is the selected environment.
+  config = lib.mkIf (config.my.desktop.environment == "niri") {
     programs.niri.enable = true;
 
     programs.noctalia = {
       enable = true;
       recommendedServices.enable = true;
-      systemd.enable = true;
+      systemd = {
+        enable = true;
+        # The default (graphical-session.target) would start Noctalia in any
+        # graphical session. Tie it to niri.
+        target = "niri.service";
+      };
       package = pkgs.unstable.noctalia;
     };
 
@@ -48,14 +53,23 @@ in {
       package = pkgs.unstable.noctalia-greeter;
     };
 
-    programs.dconf.profiles.user.databases = [
-      {
-        lockAll = true;
-        settings = {
-          "org/gnome/desktop/interface".color-scheme = "prefer-dark";
-          "org/gtk/settings/file-chooser".sort-directories-first = true;
-        };
-      }
+    # Trash and remote mounts for Nautilus
+    services.gvfs.enable = true;
+
+    # GNOME and COSMIC ship their own versions of the theming and apps below.
+    environment.systemPackages = with pkgs; [
+      xwayland-satellite
+      brightnessctl
+      hyprpicker
+      unstable.nirimod
+
+      # theming
+      adwaita-icon-theme
+      nordzy-cursor-theme
+
+      # the flatpak versions of these apps do not work well
+      nautilus
+      baobab
     ];
   };
 }
