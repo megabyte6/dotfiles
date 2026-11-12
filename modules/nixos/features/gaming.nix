@@ -10,6 +10,11 @@
     programs = {
       steam = {
         enable = true;
+        # Disable CEF GPU compositing so Steam's webviews don't render black or
+        # glitch on Linux, especially under niri/xwayland-satellite or NVIDIA.
+        package = pkgs.steam.override {
+          extraArgs = "-cef-disable-gpu-compositing";
+        };
         gamescopeSession.enable = true;
         extraCompatPackages = with pkgs; [
           proton-ge-bin
