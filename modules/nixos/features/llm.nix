@@ -10,7 +10,11 @@
     services = {
       llama-cpp = {
         enable = true;
-        package = pkgs.unstable.llama-cpp;
+        # Build with CUDA only on hosts with an NVIDIA GPU; other hosts get the
+        # CPU build instead of pulling in the CUDA toolchain.
+        package = pkgs.unstable.llama-cpp.override {
+          cudaSupport = config.my.hardware.nvidia.enable;
+        };
         port = 8033;
         modelsDir = "/srv/llama-cpp/models/";
         extraFlags = [

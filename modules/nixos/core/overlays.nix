@@ -7,10 +7,6 @@
         extraArgs = "-cef-disable-gpu-compositing";
       };
     })
-
-    (final: prev: {
-      llama-cpp = prev.llama-cpp.override {cudaSupport = true;};
-    })
   ];
 in {
   nixpkgs.overlays =
