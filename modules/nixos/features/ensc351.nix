@@ -51,7 +51,7 @@ in {
 
     # Shared folder, world-writable.
     systemd.tmpfiles.rules = [
-      "d /srv/ensc351/public 0777 brayden users"
+      "d /srv/ensc351/public 0777 ${config.my.user.name} users"
     ];
 
     services.nfs.server = {
