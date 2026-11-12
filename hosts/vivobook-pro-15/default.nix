@@ -4,11 +4,7 @@
     # (/etc/nixos/hardware-configuration.nix) to this directory.
     ./hardware-configuration.nix
     ./hardware.nix
-
-    ../../modules/nixos
   ];
-
-  networking.hostName = "vivobook-pro-15";
 
   my.desktop.enable = true;
 
