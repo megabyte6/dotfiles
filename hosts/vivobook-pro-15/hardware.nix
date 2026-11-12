@@ -16,8 +16,6 @@
     faceUnlock.enable = true;
   };
 
-  hardware.bluetooth.enable = true;
-
   # Disable wakeup from a specific PCI device. The device path is
   # machine-specific. Verify against `cat /proc/acpi/wakeup` and sysfs.
   systemd.services.disableWakeup = {

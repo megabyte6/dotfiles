@@ -8,5 +8,6 @@
     ./desktop
     ./features
     ./hardware
+    ./profiles
   ];
 }

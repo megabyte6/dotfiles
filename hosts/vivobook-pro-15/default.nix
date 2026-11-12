@@ -6,18 +6,11 @@
     ./hardware.nix
   ];
 
-  my.desktop.enable = true;
+  my.profiles.workstation.enable = true;
 
-  my.features = {
-    gaming.enable = true;
-    llm.enable = true;
-    printing.enable = true;
-    reverseEngineering.enable = true;
-    virtualisation.enable = true;
-    ensc351 = {
-      enable = true;
-      externalInterface = "wlo1";
-    };
+  my.features.ensc351 = {
+    enable = true;
+    externalInterface = "wlo1";
   };
 
   # This value determines the NixOS release from which the default
