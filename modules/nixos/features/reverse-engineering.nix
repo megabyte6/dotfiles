@@ -18,8 +18,12 @@
       pkg = config.programs.binary-ninja.package;
     in [(pkg.unwrapped or pkg).src];
 
-    environment.systemPackages = with pkgs; [
-      wireshark
-    ];
+    # Installs Wireshark and a capture-capable dumpcap wrapper usable by the
+    # 'wireshark' group, so capturing doesn't need root.
+    programs.wireshark = {
+      enable = true;
+      package = pkgs.wireshark; # default is wireshark-cli (no GUI)
+    };
+    users.users.${config.my.user.name}.extraGroups = ["wireshark"];
   };
 }
