@@ -7,6 +7,7 @@
   ];
 
   my.profiles.workstation.enable = true;
+  my.desktop.environment = "gnome";
 
   my.features.ensc351 = {
     enable = true;
