@@ -10,6 +10,18 @@
 
   networking.hostName = "vivobook-pro-15";
 
+  my.features = {
+    gaming.enable = true;
+    llm.enable = true;
+    printing.enable = true;
+    reverseEngineering.enable = true;
+    virtualisation.enable = true;
+    ensc351 = {
+      enable = true;
+      externalInterface = "wlo1";
+    };
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave
