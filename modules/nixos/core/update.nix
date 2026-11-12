@@ -75,7 +75,7 @@ in {
             status=0
             ${pkgs.writeShellScript "nixos-upgrade-script" config.systemd.services.nixos-upgrade.script} || status=$?
             ${waitFlatpak}
-            # Use the exit status from the NixOS update instead of the Flatpak update
+            # Exit with the NixOS upgrade's status, regardless of how any Flatpak update went
             exit "$status"
           '';
         in
