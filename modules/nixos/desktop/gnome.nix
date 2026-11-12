@@ -8,6 +8,10 @@
     services.desktopManager.gnome.enable = true;
     services.displayManager.gdm.enable = true;
 
+    environment.systemPackages = with pkgs; [
+      gnome-tweaks
+    ];
+
     environment.gnome.excludePackages = with pkgs; [
       # Already installed as flatpaks (flatpak.nix), which stay the same across
       # every desktop.
