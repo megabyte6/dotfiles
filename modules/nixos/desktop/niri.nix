@@ -1,4 +1,5 @@
 {
+  config,
   pkgs,
   inputs,
   lib,
@@ -30,27 +31,31 @@ in {
     )
   ];
 
-  programs.niri.enable = true;
+  # The imports above stay unconditional (they only declare options);
+  # everything below is gated on the desktop toggle.
+  config = lib.mkIf config.my.desktop.enable {
+    programs.niri.enable = true;
 
-  programs.noctalia = {
-    enable = true;
-    recommendedServices.enable = true;
-    systemd.enable = true;
-    package = pkgs.unstable.noctalia;
+    programs.noctalia = {
+      enable = true;
+      recommendedServices.enable = true;
+      systemd.enable = true;
+      package = pkgs.unstable.noctalia;
+    };
+
+    services.displayManager.noctalia-greeter = {
+      enable = true;
+      package = pkgs.unstable.noctalia-greeter;
+    };
+
+    programs.dconf.profiles.user.databases = [
+      {
+        lockAll = true;
+        settings = {
+          "org/gnome/desktop/interface".color-scheme = "prefer-dark";
+          "org/gtk/settings/file-chooser".sort-directories-first = true;
+        };
+      }
+    ];
   };
-
-  services.displayManager.noctalia-greeter = {
-    enable = true;
-    package = pkgs.unstable.noctalia-greeter;
-  };
-
-  programs.dconf.profiles.user.databases = [
-    {
-      lockAll = true;
-      settings = {
-        "org/gnome/desktop/interface".color-scheme = "prefer-dark";
-        "org/gtk/settings/file-chooser".sort-directories-first = true;
-      };
-    }
-  ];
 }

@@ -10,6 +10,8 @@
 
   networking.hostName = "vivobook-pro-15";
 
+  my.desktop.enable = true;
+
   my.features = {
     gaming.enable = true;
     llm.enable = true;
