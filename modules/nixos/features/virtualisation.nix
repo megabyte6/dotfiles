@@ -21,6 +21,8 @@
     };
 
     programs.virt-manager.enable = true;
+    # Manage system VMs without a password prompt
+    users.users.${config.my.user.name}.extraGroups = ["libvirtd"];
 
     environment.systemPackages = with pkgs; [
       distrobox
