@@ -3,7 +3,12 @@
   pkgs,
   lib,
   ...
-}: {
+}: let
+  # When flatpak is enabled, its updates run as part of the nightly upgrade
+  # instead of on nix-flatpak's own timer. That way both share the sleep
+  # inhibit and the GitHub Actions check.
+  withFlatpak = config.services.flatpak.enable;
+in {
   assertions = [
     {
       assertion = config.systemd.services.nixos-upgrade.script != "";
@@ -16,11 +21,6 @@
     flake = "github:megabyte6/dotfiles#${config.networking.hostName}";
     flags = ["--print-build-logs"];
     runGarbageCollection = true;
-  };
-
-  services.flatpak = {
-    uninstallUnmanaged = true;
-    update.auto.enable = true;
   };
 
   systemd = {
@@ -46,6 +46,21 @@
       in ["${waitForInhibit}"];
 
       ExecStart = let
+        startFlatpak = lib.optionalString withFlatpak ''
+          # Run the Flatpak update in parallel. `restart` (not `start`) forces the oneshot to
+          # re-run each day even if it is still marked active from a previous run.
+          ${config.systemd.package}/bin/systemctl restart flatpak-managed-install-timer.service &
+          flatpak_pid=$!
+
+        '';
+        # Leading "\n" is explicit because '' strings drop an empty first line.
+        waitFlatpak = lib.optionalString withFlatpak ("\n"
+          + ''
+            if ! wait "$flatpak_pid"; then
+              echo "flatpak-managed-install-timer failed; continuing" >&2
+            fi
+          '');
+
         fullUpdate = pkgs.writeShellScript "full-update" ''
           # Wait for internet connectivity
           ${pkgs.curl}/bin/curl --silent --fail --connect-timeout 5 \
@@ -62,19 +77,10 @@
             exit 1
           fi
 
-          # Run the Flatpak update in parallel. `restart` (not `start`) forces the oneshot to
-          # re-run each day even if it is still marked active from a previous run.
-          ${config.systemd.package}/bin/systemctl restart flatpak-managed-install-timer.service &
-          flatpak_pid=$!
-
-          # Save the exit status to pass as the exit status of the service
+          ${startFlatpak}# Save the exit status to pass as the exit status of the service
           status=0
           ${pkgs.writeShellScript "nixos-upgrade-script" config.systemd.services.nixos-upgrade.script} || status=$?
-
-          if ! wait "$flatpak_pid"; then
-            echo "flatpak-managed-install-timer failed; continuing" >&2
-          fi
-
+          ${waitFlatpak}
           # Use the exit status from the NixOS update instead of the Flatpak update
           exit "$status"
         '';
@@ -86,7 +92,9 @@
       nixos-upgrade.timerConfig.WakeSystem = true;
 
       # The flatpak update is driven by the nixos-upgrade.service above
-      flatpak-managed-install-timer.enable = lib.mkForce false;
+      flatpak-managed-install-timer = lib.mkIf withFlatpak {
+        enable = lib.mkForce false;
+      };
     };
   };
 }
