@@ -6,11 +6,7 @@
         # For StackSmash VPN network
         networkmanager-openvpn
         # For SFU VPN network
-        # ---------------------------------------------------------------------
-        # networkmanager-fortisslvpn is flagged insecure (CVE-2026-91839) in
-        # the pinned nixpkgs. Uncomment once a fixed version lands.
-        # ---------------------------------------------------------------------
-        #networkmanager-fortisslvpn
+        networkmanager-openconnect
       ];
     };
 
