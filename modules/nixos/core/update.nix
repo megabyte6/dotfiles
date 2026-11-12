@@ -5,8 +5,7 @@
   ...
 }: let
   # When flatpak is enabled, its updates run as part of the nightly upgrade
-  # instead of on nix-flatpak's own timer. That way both share the sleep
-  # inhibit and the GitHub Actions check.
+  # instead of on nix-flatpak's own timer, so both share the sleep inhibit.
   withFlatpak = config.services.flatpak.enable;
 in {
   assertions = [
@@ -66,16 +65,6 @@ in {
           ${pkgs.curl}/bin/curl --silent --fail --connect-timeout 5 \
             --retry 20 --retry-delay 3 --retry-all-errors --retry-max-time 60 \
             https://github.com > /dev/null || exit 1
-
-          # Skip the update if the latest completed run of the flake-update workflow failed.
-          # Fail open: if the API is unreachable or rate limited, the update proceeds anyway.
-          conclusion=$(${pkgs.curl}/bin/curl --silent --fail --connect-timeout 5 --max-time 20 \
-            "https://api.github.com/repos/megabyte6/dotfiles/actions/workflows/update-flake-inputs.yaml/runs?per_page=1&status=completed" \
-            | ${pkgs.jq}/bin/jq -r '.workflow_runs[0].conclusion // empty') || conclusion=""
-          if [ "$conclusion" = "failure" ]; then
-            echo "Latest 'Update flake inputs' GitHub Action failed; skipping update." >&2
-            exit 1
-          fi
 
           ${startFlatpak}# Save the exit status to pass as the exit status of the service
           status=0
