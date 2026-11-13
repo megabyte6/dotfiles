@@ -6,7 +6,7 @@
 }: let
   # Fraction of the real finger movement that two-finger touchpad scrolling
   # sees. Lower is slower.
-  touchpadScrollFactor = 0.5;
+  touchpadScrollFactor = 0.4;
 in {
   config = lib.mkIf (config.my.desktop.environment == "gnome") {
     services.desktopManager.gnome.enable = true;
