@@ -15,7 +15,9 @@
       nixd
 
       unstable.ghostty
-      brave
+      (brave.override {
+        commandLineArgs = "--enable-features=WaylandUnscaledTouchpadScrolling";
+      })
       unstable.vscode
       unstable.jetbrains.idea
       unstable.proton-authenticator
