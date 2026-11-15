@@ -33,5 +33,11 @@ in {
       # Ghostty is the terminal (packages.nix).
       cosmic-term
     ];
+
+    environment.systemPackages = with pkgs; [
+      # COSMIC has no disk usage analyzer. Native for the same reason as on
+      # niri (niri.nix): the flatpak version does not work well.
+      baobab
+    ];
   };
 }
