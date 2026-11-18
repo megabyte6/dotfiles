@@ -34,5 +34,15 @@
       # fall-through, i.e. when the password box was empty.
       rules.auth.howdy.order = config.security.pam.services.login.rules.auth.unix.order + 100;
     };
+
+    # Same for the COSMIC greeter and lock screen (both use this PAM service).
+    # cosmic-greeter ignores an empty submit, so the scan only runs after you
+    # press Enter with any character typed (the password check fails, then
+    # Howdy runs). Putting Howdy first would avoid that but blocks the password
+    # prompt until the scan finishes, since PAM runs modules sequentially.
+    security.pam.services.cosmic-greeter = {
+      howdy.enable = true;
+      rules.auth.howdy.order = config.security.pam.services.cosmic-greeter.rules.auth.unix.order + 100;
+    };
   };
 }
