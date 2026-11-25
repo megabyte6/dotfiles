@@ -22,5 +22,10 @@
       };
       gamemode.enable = true;
     };
+
+    # Packages prefixed with `unstable.` come from the unstable overlay.
+    environment.systemPackages = with pkgs; [
+      unstable.deadlock-mod-manager-cef
+    ];
   };
 }
